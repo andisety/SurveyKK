@@ -32,6 +32,6 @@ interface  ApiEndPoint {
     @FormUrlEncoded
     @POST("survey/destroy/")
     fun delete(
-        @Field("id")id:String?
+        @Field("id")id:String
     ): Call<SubmitModel>
 }
