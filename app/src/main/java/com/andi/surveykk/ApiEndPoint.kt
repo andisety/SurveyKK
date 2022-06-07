@@ -1,10 +1,7 @@
 package com.andi.surveykk
 
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface  ApiEndPoint {
 
@@ -20,9 +17,9 @@ interface  ApiEndPoint {
     ): Call<SubmitModel>
 
     @FormUrlEncoded
-    @POST("survey/update/" )
+    @POST("survey/update/{id}" )
     fun edit(
-        @Field("id")id:String,
+        @Path("id")id:String,
         @Field("nokk")noKK:String,
         @Field("jumlahAnggota")jumlahAnggota:String,
         @Field("latitude")latitude:String,
@@ -30,8 +27,8 @@ interface  ApiEndPoint {
     ): Call<SubmitModel>
 
     @FormUrlEncoded
-    @POST("survey/destroy/")
+    @POST("survey/destroy/{id}")
     fun delete(
-        @Field("id")id:String
+        @Path("id") id: String
     ): Call<SubmitModel>
 }

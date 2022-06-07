@@ -38,27 +38,7 @@ class CreateEditActivity : AppCompatActivity() {
             btnDelete.visibility = View.VISIBLE
 
             btnDelete.setOnClickListener {
-                api.delete(survey.id).enqueue(object:Callback<SubmitModel>{
-                    override fun onResponse(
-                        call: Call<SubmitModel>,
-                        response: Response<SubmitModel>
-                    ) {
-                        if(response.isSuccessful){
-                            val result = response.body()
-                            Toast.makeText(
-                                applicationContext,
-                                result!!.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            finish()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
+               hapus()
             }
         }
 
@@ -84,7 +64,7 @@ class CreateEditActivity : AppCompatActivity() {
     private fun edit(){
         if(etNoKK.text.isNotEmpty() && etJumlahAgt.text.isNotEmpty() && etLatitude.text.isNotEmpty() && etLongitude.text.isNotEmpty()){
             api.edit(
-                etId.text.toString(),
+                survey.id!!,
                 etNoKK.text.toString(),
                 etJumlahAgt.text.toString(),
                 etLatitude.text.toString(),
@@ -132,5 +112,18 @@ class CreateEditActivity : AppCompatActivity() {
         }else{
             Toast.makeText(applicationContext,"Masukan data dahulu",Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun hapus(){
+        api.delete(survey.id!!).enqueue(object : Callback<SubmitModel>{
+            override fun onResponse(call: Call<SubmitModel>, response: Response<SubmitModel>) {
+                Toast.makeText(applicationContext,response.message(),Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 }
