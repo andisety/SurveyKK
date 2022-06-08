@@ -26,8 +26,8 @@ interface  ApiEndPoint {
         @Field("longitude")longitude:String,
     ): Call<SubmitModel>
 
-    @FormUrlEncoded
-    @POST("survey/destroy/{id}")
+
+    @GET("survey/destroy/{id}")
     fun delete(
         @Path("id") id: String
     ): Call<SubmitModel>

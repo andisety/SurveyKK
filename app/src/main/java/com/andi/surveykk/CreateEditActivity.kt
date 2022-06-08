@@ -1,5 +1,6 @@
 package com.andi.surveykk
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +40,19 @@ class CreateEditActivity : AppCompatActivity() {
             btnDelete.visibility = View.VISIBLE
 
             btnDelete.setOnClickListener {
-               hapus()
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Hapus ")
+                builder.setMessage("Yakin mau menghapus ini ?")
+//builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+                builder.setPositiveButton("Yes") { _, which ->
+                    hapus()
+                }
+
+                builder.setNegativeButton("No") { dialog, which ->
+
+                }
+                builder.show()
             }
         }
 
@@ -116,8 +130,15 @@ class CreateEditActivity : AppCompatActivity() {
 
     private fun hapus(){
         api.delete(survey.id!!).enqueue(object : Callback<SubmitModel>{
+
             override fun onResponse(call: Call<SubmitModel>, response: Response<SubmitModel>) {
-                Toast.makeText(applicationContext,response.message(),Toast.LENGTH_SHORT).show()
+                if(response.isSuccessful){
+                    Toast.makeText(applicationContext,response.message(),Toast.LENGTH_SHORT).show()
+                    finish()
+                }else{
+                    Toast.makeText(applicationContext,response.message(),Toast.LENGTH_SHORT).show()
+                }
+
             }
 
             override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
