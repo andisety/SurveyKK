@@ -14,7 +14,7 @@ interface  ApiEndPoint {
         @Field("jumlahAnggota")jumlahAnggota:String,
         @Field("latitude")latitude:String,
         @Field("longitude")longitude:String,
-    ): Call<SubmitModel>
+    ): Call<SurveyModel.SubmitResponse>
 
     @FormUrlEncoded
     @POST("survey/update/{id}" )
@@ -24,11 +24,11 @@ interface  ApiEndPoint {
         @Field("jumlahAnggota")jumlahAnggota:String,
         @Field("latitude")latitude:String,
         @Field("longitude")longitude:String,
-    ): Call<SubmitModel>
+    ): Call<SurveyModel.SubmitResponse>
 
 
     @GET("survey/destroy/{id}")
     fun delete(
         @Path("id") id: String
-    ): Call<SubmitModel>
+    ): Call<SurveyModel.SubmitResponse>
 }

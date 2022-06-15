@@ -83,13 +83,13 @@ class CreateEditActivity : AppCompatActivity() {
                 etJumlahAgt.text.toString(),
                 etLatitude.text.toString(),
                 etLongitude.text.toString(),
-            ).enqueue(object : Callback<SubmitModel>{
-                override fun onResponse(call: Call<SubmitModel>, response: Response<SubmitModel>) {
+            ).enqueue(object : Callback<SurveyModel.SubmitResponse>{
+                override fun onResponse(call: Call<SurveyModel.SubmitResponse>, response: Response<SurveyModel.SubmitResponse>) {
                     val result = response.body()!!.message
                     Toast.makeText(applicationContext,result,Toast.LENGTH_SHORT).show()
                     finish()
                 }
-                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+                override fun onFailure(call: Call<SurveyModel.SubmitResponse>, t: Throwable) {
                     TODO("Not yet implemented")
                 }
             })
@@ -106,10 +106,10 @@ class CreateEditActivity : AppCompatActivity() {
                 etJumlahAgt.text.toString(),
                 etLatitude.text.toString(),
                 etLongitude.text.toString(),
-            ).enqueue(object : Callback<SubmitModel>{
+            ).enqueue(object : Callback<SurveyModel.SubmitResponse>{
                 override fun onResponse(
-                    call: Call<SubmitModel>,
-                    response: Response<SubmitModel>
+                    call: Call<SurveyModel.SubmitResponse>,
+                    response: Response<SurveyModel.SubmitResponse>
                 ) {
                     if (response.isSuccessful){
                         val result = response.body()!!.message
@@ -119,7 +119,7 @@ class CreateEditActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext,"eror",Toast.LENGTH_SHORT).show()
                     }
                 }
-                override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+                override fun onFailure(call: Call<SurveyModel.SubmitResponse>, t: Throwable) {
                     TODO("Not yet implemented")
                 }
             })
@@ -129,9 +129,9 @@ class CreateEditActivity : AppCompatActivity() {
     }
 
     private fun hapus(){
-        api.delete(survey.id!!).enqueue(object : Callback<SubmitModel>{
+        api.delete(survey.id!!).enqueue(object : Callback<SurveyModel.SubmitResponse>{
 
-            override fun onResponse(call: Call<SubmitModel>, response: Response<SubmitModel>) {
+            override fun onResponse(call: Call<SurveyModel.SubmitResponse>, response: Response<SurveyModel.SubmitResponse>) {
                 if(response.isSuccessful){
                     Toast.makeText(applicationContext,response.message(),Toast.LENGTH_SHORT).show()
                     finish()
@@ -141,7 +141,7 @@ class CreateEditActivity : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: Call<SubmitModel>, t: Throwable) {
+            override fun onFailure(call: Call<SurveyModel.SubmitResponse>, t: Throwable) {
                 TODO("Not yet implemented")
             }
 

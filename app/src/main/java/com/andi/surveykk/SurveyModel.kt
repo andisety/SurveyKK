@@ -9,4 +9,6 @@ data class SurveyModel (val survey:List<Data>){
         val jumlahAnggota:String?,
         val latitude:String?,
         val longitude:String?):Serializable
+
+    data class SubmitResponse(val message:String)
 }
