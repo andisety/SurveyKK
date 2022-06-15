@@ -36,6 +36,10 @@ class SurveyAdapter(
         holder.itemView.setOnClickListener {
             listener.onEdit(data)
         }
+        holder.itemView.setOnLongClickListener {
+            listener.onEditLong(data)
+            true
+        }
 
     }
 
@@ -51,5 +55,6 @@ class SurveyAdapter(
 
     interface OnAdapterListener {
         fun onEdit(surve:SurveyModel.Data)
+        fun onEditLong(surve:SurveyModel.Data)
     }
 }

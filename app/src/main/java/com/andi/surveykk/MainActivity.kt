@@ -1,9 +1,11 @@
 package com.andi.surveykk
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
@@ -29,9 +31,6 @@ class MainActivity : AppCompatActivity() {
                     .putExtra("mode","add")
             )
         }
-
-
-
     }
 
     override fun onStart() {
@@ -48,6 +47,10 @@ class MainActivity : AppCompatActivity() {
                         .putExtra("mode","edit")
                 )
             }
+
+            override fun onEditLong(surve: SurveyModel.Data) {
+                dialogPopup(surve)
+            }
         })
         api.data().enqueue(object: Callback<SurveyModel>{
             override fun onResponse(call: Call<SurveyModel>, response: Response<SurveyModel>) {
@@ -62,5 +65,21 @@ class MainActivity : AppCompatActivity() {
             }
         })
         listSurvey.adapter = surveyAdapter
+    }
+    private fun dialogPopup(surve: SurveyModel.Data){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Maps")
+        val item = arrayOf("Maps","Edit")
+        builder.setItems(item,DialogInterface.OnClickListener { dialog, which ->
+            when(which){
+                0-> startActivity(Intent(this,MapsActivity::class.java))
+                1-> startActivity(
+                    Intent(this@MainActivity,CreateEditActivity::class.java)
+                        .putExtra("survey",surve)
+                        .putExtra("mode","edit")
+                )
+            }
+        })
+        builder.show()
     }
 }
