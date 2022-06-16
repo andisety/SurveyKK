@@ -72,7 +72,9 @@ class MainActivity : AppCompatActivity() {
         val item = arrayOf("Maps","Edit")
         builder.setItems(item,DialogInterface.OnClickListener { dialog, which ->
             when(which){
-                0-> startActivity(Intent(this,MapsActivity::class.java))
+                0-> startActivity(Intent(this,MapsActivity::class.java)
+                    .putExtra("survey",surve)
+                )
                 1-> startActivity(
                     Intent(this@MainActivity,CreateEditActivity::class.java)
                         .putExtra("survey",surve)

@@ -83,13 +83,14 @@ class CreateEditActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),1)
         }else{
-            Toast.makeText(this,"Sorry can't get location",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"maaf can't get location",Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun getLocations() {
         checkPermission()
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+
             if (it == null){
                 Toast.makeText(this,"Sorry can't get location",Toast.LENGTH_SHORT).show()
             }else it.apply{
@@ -102,11 +103,7 @@ class CreateEditActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode==1){
             if (grantResults.isNotEmpty()&&grantResults[0]==PackageManager.PERMISSION_GRANTED){

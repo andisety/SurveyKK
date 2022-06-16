@@ -15,6 +15,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private val survey by lazy { intent.getSerializableExtra("survey") as SurveyModel.Data }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +42,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-         val zoomLevel = 16.0f
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val posisi = LatLng(survey.latitude!!.toDouble(), survey.longitude!!.toDouble())
+         val zoomLevel = 17.0f
+        mMap.addMarker(MarkerOptions().position(posisi))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(posisi))
         mMap.moveCamera(CameraUpdateFactory.zoomTo(zoomLevel))
 
 
