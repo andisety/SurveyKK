@@ -1,18 +1,25 @@
 package com.andi.surveykk
 
-import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class CreateEditActivity : AppCompatActivity() {
     private lateinit var etId:EditText
@@ -22,6 +29,9 @@ class CreateEditActivity : AppCompatActivity() {
     private lateinit var etLongitude:EditText
     private lateinit var btnCreate:Button
     private lateinit var btnDelete:Button
+    private lateinit var btnDetect:ImageView
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
     private val api by lazy{ApiRetrofit().endpoint}
     private val survey by lazy { intent.getSerializableExtra("survey") as SurveyModel.Data }
 
@@ -56,11 +66,56 @@ class CreateEditActivity : AppCompatActivity() {
             }
         }
 
+        btnDetect.setOnClickListener {
+            getLocations()
+        }
+
         btnCreate.setOnClickListener {
             if (etId.text.isNotEmpty()){
                 edit()
                  }else{
                  create()
+            }
+        }
+    }
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),1)
+        }else{
+            Toast.makeText(this,"Sorry can't get location",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getLocations() {
+        checkPermission()
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+            if (it == null){
+                Toast.makeText(this,"Sorry can't get location",Toast.LENGTH_SHORT).show()
+            }else it.apply{
+                val latitude = it.latitude
+                val longitude = it.longitude
+
+                etLatitude.setText(latitude.toString())
+                etLongitude.setText(longitude.toString())
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode==1){
+            if (grantResults.isNotEmpty()&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show()
+                    getLocations()
+                }else{
+                    Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -73,6 +128,8 @@ class CreateEditActivity : AppCompatActivity() {
         etLongitude=findViewById(R.id.et_longitude)
         btnCreate=findViewById(R.id.button_create)
         btnDelete=findViewById(R.id.button_delete)
+        btnDetect=findViewById(R.id.button_detect)
+        fusedLocationProviderClient=LocationServices.getFusedLocationProviderClient(this)
     }
 
     private fun edit(){
